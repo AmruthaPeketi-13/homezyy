@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity, StyleSheet,
-  FlatList, Image, ActivityIndicator, Dimensions, Animated, Easing, TextInput
+  FlatList, Image, ActivityIndicator, Dimensions, Animated, Easing
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -197,7 +197,6 @@ export default function SubServicesScreen() {
   const [isNavigating, setIsNavigating] = useState(false);
   const [selectedServiceName, setSelectedServiceName] = useState("");
   const [services, setServices] = useState<SubService[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
 
   // Animation refs for smooth entrance
   const contentOpacity = useRef(new Animated.Value(0)).current;
@@ -248,18 +247,10 @@ export default function SubServicesScreen() {
     return ['All', ...Array.from(unique)];
   }, [services]);
 
-  const filtered = useMemo(() => {
-    let list = services;
-    if (activeTab !== 'All') {
-      list = list.filter((s: SubService) => s.tab === activeTab);
-    }
-    if (searchQuery.trim()) {
-      list = list.filter((s: SubService) => 
-        s.title.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-    return list;
-  }, [services, activeTab, searchQuery]);
+  const filtered = useMemo(() =>
+    activeTab === 'All' ? services : services.filter((s: SubService) => s.tab === activeTab),
+    [services, activeTab]
+  );
 
   const toggleFav = (title: string) => {
     setFavorites((prev) => {
@@ -334,24 +325,6 @@ export default function SubServicesScreen() {
           <TouchableOpacity style={styles.iconBtn}>
             <MaterialIcons name="tune" size={22} color={Colors.textPrimary} />
           </TouchableOpacity>
-        </View>
-
-        <View style={styles.searchRow}>
-          <View style={styles.searchContainer}>
-            <MaterialIcons name="search" size={20} color={Colors.primary} />
-            <TextInput
-              style={styles.searchInput}
-              placeholder={`Search in ${category}...`}
-              placeholderTextColor="#94a3b8"
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-            />
-            {searchQuery.length > 0 && (
-              <TouchableOpacity onPress={() => setSearchQuery('')}>
-                <MaterialIcons name="cancel" size={18} color={Colors.border} />
-              </TouchableOpacity>
-            )}
-          </View>
         </View>
 
         {/* Tab strip */}
@@ -429,29 +402,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-  },
-  searchRow: {
-    paddingHorizontal: Spacing.base,
-    paddingBottom: Spacing.sm,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 14,
-    paddingHorizontal: 12,
-    height: 48,
-    borderWidth: 1,
-    borderColor: '#f1f5f9',
-    ...Shadow.sm,
-  },
-  searchInput: {
-    flex: 1,
-    marginLeft: 8,
-    fontSize: 15,
-    fontFamily: 'Manrope-Medium',
-    color: Colors.textPrimary,
+    gap: 8,
   },
   catIcon: {
     width: 32, height: 32,

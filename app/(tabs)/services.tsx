@@ -196,23 +196,24 @@ export default function ServicesScreen() {
         <View style={styles.titleBlock}>
           <Text style={styles.pageTitle}>Our Services</Text>
           <Text style={styles.pageSubtitle}>Find the right expert for your home needs</Text>
-        <View style={styles.searchRow}>
-          <View style={styles.searchContainer}>
-            <MaterialIcons name="search" size={22} color={Colors.primary} />
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search for plumbing, cleaning..."
-              placeholderTextColor="#94a3b8"
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-            />
-            {searchQuery.length > 0 && (
-              <TouchableOpacity onPress={() => setSearchQuery('')}>
-                <MaterialIcons name="cancel" size={20} color={Colors.border} />
-              </TouchableOpacity>
-            )}
-          </View>
         </View>
+
+        {/* Search bar */}
+        <View style={styles.searchBar}>
+          <MaterialIcons name="search" size={20} color={Colors.textMuted} style={{ marginRight: 8 }} />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search for a service..."
+            placeholderTextColor={Colors.textMuted}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            returnKeyType="search"
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchQuery('')} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+              <MaterialIcons name="close" size={18} color={Colors.textSecondary} />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
 
@@ -286,27 +287,20 @@ const styles = StyleSheet.create({
     fontFamily: 'Manrope-Regular',
     color: Colors.textSecondary,
   },
-  searchRow: {
-    paddingHorizontal: 20,
-    marginTop: 20,
-    marginBottom: 8,
-  },
-  searchContainer: {
+  searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    height: 54,
+    backgroundColor: Colors.surfaceAlt,
+    borderRadius: Radius.md,
+    paddingHorizontal: Spacing.md,
+    height: 48,
     borderWidth: 1,
-    borderColor: '#f1f5f9',
-    ...Shadow.md,
+    borderColor: Colors.border,
   },
   searchInput: {
     flex: 1,
-    marginLeft: 12,
-    fontSize: 16,
-    fontFamily: 'Manrope-Medium',
+    fontSize: Typography.base,
+    fontFamily: 'Manrope-Regular',
     color: Colors.textPrimary,
   },
 

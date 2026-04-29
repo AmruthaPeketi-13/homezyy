@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity, StyleSheet,
   Dimensions, Animated, FlatList, ImageBackground, Image,
-  Platform, useWindowDimensions, TextInput,
+  Platform, useWindowDimensions,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -106,18 +106,10 @@ function HeroSection({ onGetStarted }: { onGetStarted: () => void }) {
           </Text>
 
           <View style={[hs.actions, isDesktop && { marginTop: 48 }]}>
-            <View style={hs.searchContainer}>
-              <MaterialIcons name="search" size={24} color="#3e2a56" />
-              <TextInput
-                style={hs.searchInput}
-                placeholder="What service do you need?"
-                placeholderTextColor="rgba(62, 42, 86, 0.4)"
-                onFocus={onGetStarted} // Redirect to services for now
-              />
-              <TouchableOpacity style={hs.goBtn} onPress={onGetStarted}>
-                <MaterialIcons name="arrow-forward" size={20} color="#fff" />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={[hs.primaryBtn, isDesktop && { paddingHorizontal: 42, paddingVertical: 18 }]}
+              onPress={onGetStarted} activeOpacity={0.85}>
+              <Text style={[hs.primaryBtnText, isDesktop && { fontSize: 16 }]}>GET STARTED</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -203,34 +195,8 @@ const hs = StyleSheet.create({
   actions: { 
     flexDirection: 'row', 
     alignItems: 'center', 
-    width: '100%',
-    maxWidth: 500,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 18,
-    paddingHorizontal: 16,
-    height: 62,
-    flex: 1,
-    ...Shadow.lg,
-  },
-  searchInput: {
-    flex: 1,
-    marginLeft: 12,
-    fontSize: 16,
-    fontFamily: 'Manrope-SemiBold',
-    color: '#3e2a56',
-  },
-  goBtn: {
-    backgroundColor: '#3e2a56',
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 8,
+    gap: 16,
+    flexWrap: 'wrap' // Wrap on very small screens
   },
   primaryBtn: {
     backgroundColor: '#3e2a56',
